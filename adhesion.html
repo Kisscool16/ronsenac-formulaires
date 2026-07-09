@@ -532,7 +532,8 @@
       .catch(err => {
         btn.disabled = false;
         btn.textContent = 'Valider mon adhésion';
-        alert(err && err.message ? err.message : "Une erreur est survenue, merci de réessayer ou de contacter l'association.");
+        document.getElementById('messageErreur').textContent = err && err.message ? err.message : "Une erreur est survenue, merci de réessayer ou de contacter l'association.";
+        document.getElementById('messageErreur').style.display = 'block';
         console.error(err);
       });
   }
@@ -597,7 +598,39 @@
   }
 
   function telechargerTicket(){
-    window.print();
+    const contenu = document.getElementById('zoneImpression').innerHTML;
+    const fenetre = window.open('', '_blank');
+
+    if (!fenetre) {
+      const zone = document.getElementById('messageErreur');
+      zone.textContent = "Merci d'autoriser les fenêtres pop-up de ce site pour télécharger votre ticket (icône bloquée dans la barre d'adresse de votre navigateur), puis réessayez.";
+      zone.style.display = 'block';
+      return;
+    }
+
+    fenetre.document.write(
+      '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">' +
+      '<title>Ticket adhésion — Ronsenac Patrimoines</title>' +
+      '<style>' +
+      'body{font-family:Georgia,"Times New Roman",serif;color:#222;margin:0;padding:20px;}' +
+      '.feuille{max-width:640px;margin:0 auto;border:2px solid #3f6b45;border-radius:10px;padding:22px 26px;}' +
+      '.entete{display:flex;align-items:center;gap:16px;border-bottom:1px solid #ccc;padding-bottom:12px;margin-bottom:14px;}' +
+      '.entete img{width:64px;height:64px;object-fit:contain;}' +
+      '.entete h2{margin:0;font-size:1.3rem;}' +
+      '.bandeau{text-align:center;font-weight:bold;border:2px solid #b8862e;color:#b8862e;padding:6px;margin-bottom:14px;letter-spacing:.03em;}' +
+      'table{width:100%;border-collapse:collapse;margin-top:10px;}' +
+      'td{padding:7px 4px;border-bottom:1px solid #ddd;font-size:0.95rem;}' +
+      'td:first-child{color:#555;width:40%;}' +
+      '.instructions{margin-top:14px;font-size:0.95rem;}' +
+      '.avertissement-impression{margin-top:14px;border:1px solid #999;border-radius:6px;padding:10px 12px;font-size:0.85rem;background:#fafafa;}' +
+      '.pied{margin-top:18px;font-size:0.82rem;text-align:center;color:#666;}' +
+      '.signature-ligne{margin-top:22px;font-size:0.95rem;}' +
+      '@media print{ body{padding:0;} }' +
+      '</style></head><body><div class="feuille">' + contenu + '</div>' +
+      '<script>window.onload = function(){ window.print(); };<\/script>' +
+      '</body></html>'
+    );
+    fenetre.document.close();
   }
 
   function reinitialiserFormulaire(){
