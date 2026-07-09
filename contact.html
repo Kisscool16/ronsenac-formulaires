@@ -219,7 +219,8 @@
       .catch(err => {
         btn.disabled = false;
         btn.textContent = 'Envoyer';
-        alert(err && err.message ? err.message : "Une erreur est survenue, merci de réessayer.");
+        document.getElementById('messageErreur').textContent = err && err.message ? err.message : "Une erreur est survenue, merci de réessayer.";
+        document.getElementById('messageErreur').style.display = 'block';
         console.error(err);
       });
   }
