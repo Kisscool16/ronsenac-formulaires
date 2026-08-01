@@ -141,13 +141,6 @@
       <input type="text" id="siteWeb" name="siteWeb" tabindex="-1" autocomplete="off">
     </div>
 
-    <label class="champ" for="destinataire">Destinataire<span class="obligatoire">*</span></label>
-    <select id="destinataire" required>
-      <option value="" disabled selected>-- Choisissez un destinataire --</option>
-      <option value="ronsenac">Ronsenac Patrimoines</option>
-      <option value="callisto">Astronomie Callisto</option>
-    </select>
-
     <label class="champ" for="nom">Nom<span class="obligatoire">*</span></label>
     <input type="text" id="nom" required>
 
@@ -182,13 +175,12 @@
   }
 
   function validerFormulaire(){
-    const destinataire = document.getElementById('destinataire').value;
     const nom = document.getElementById('nom').value.trim();
     const prenom = document.getElementById('prenom').value.trim();
     const email = document.getElementById('email').value.trim();
     const message = document.getElementById('message').value.trim();
 
-    if(!destinataire || !nom || !prenom || !email || !message){
+    if(!nom || !prenom || !email || !message){
       document.getElementById('messageErreur').textContent = 'Merci de compléter tous les champs obligatoires.';
       document.getElementById('messageErreur').style.display = 'block';
       return;
@@ -200,7 +192,7 @@
     }
     document.getElementById('messageErreur').style.display = 'none';
 
-    const data = { destinataire, nom, prenom, email, message, piege: document.getElementById('siteWeb').value };
+    const data = { nom, prenom, email, message, piege: document.getElementById('siteWeb').value };
 
     const btn = document.getElementById('btnEnvoyer');
     btn.disabled = true;
